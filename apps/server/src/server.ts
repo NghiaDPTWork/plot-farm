@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+const intentionalCiFailureTest: number = "this string will fail typescript build";
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
