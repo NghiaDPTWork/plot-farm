@@ -110,14 +110,18 @@ jobs:
           TEST_TXT="Passed"
           if [ "$TEST_STATUS" != "success" ]; then TEST_TXT="Failed"; fi
 
-          # Determine Branch flow (source -> target if PR)
+          # Determine PR Title or Commit Message & Branch Flow
           if [ "${{ github.event_name }}" = "pull_request" ]; then
+            PR_NUM="${{ github.event.pull_request.number }}"
+            PR_TITLE="${{ github.event.pull_request.title }}"
+            ITEM_TITLE="**PR #$PR_NUM:** $PR_TITLE"
             BRANCH_FLOW="${{ github.head_ref }} ➔ ${{ github.base_ref }}"
           else
+            COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+            ITEM_TITLE="**Commit:** \`$COMMIT_MSG\`"
             BRANCH_FLOW="${{ github.ref_name }}"
           fi
 
-          COMMIT_MSG=$(git log -1 --pretty=format:"%s")
           ACTION_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
           MESSAGE_JSON=$(cat <<EOF
@@ -129,7 +133,7 @@ jobs:
                 "title": "$TITLE_EMOJI CI Pipeline: $OVERALL_STATUS",
                 "url": "$ACTION_URL",
                 "color": $COLOR,
-                "description": "**Commit:** \`$COMMIT_MSG\`\n**Author:** \`${{ github.actor }}\` | **Event:** \`${{ github.event_name }}\`",
+                "description": "$ITEM_TITLE\n\n**Author:** \`${{ github.actor }}\`  |  **Event:** \`${{ github.event_name }}\`",
                 "fields": [
                   { "name": "Branch Flow", "value": "\`$BRANCH_FLOW\`", "inline": false },
                   { "name": "Lint & Typecheck", "value": "$LINT_TXT", "inline": true },
