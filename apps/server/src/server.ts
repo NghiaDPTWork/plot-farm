@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/health", (_req: Request, res: Response) => {
-  res.json({ status: "ok", service: "smart-farm-server" });
+  res.json({ status: "ok", service: "plot-farm-server" });
 });
 
 app.listen(PORT, () => {
