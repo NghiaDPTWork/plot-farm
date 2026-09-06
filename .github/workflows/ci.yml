@@ -95,11 +95,13 @@ jobs:
           TEST_STATUS="${{ needs.unit-and-automation-tests.result }}"
           
           COLOR=65280
-          OVERALL_STATUS="SUCCESS"
+          TITLE_EMOJI="✅"
+          OVERALL_STATUS="BUILD PASSED"
 
           if [ "$LINT_STATUS" != "success" ] || [ "$TEST_STATUS" != "success" ]; then
             COLOR=16711680
-            OVERALL_STATUS="FAILED"
+            TITLE_EMOJI="❌"
+            OVERALL_STATUS="BUILD FAILED"
           fi
 
           LINT_TXT="Passed"
@@ -107,6 +109,13 @@ jobs:
 
           TEST_TXT="Passed"
           if [ "$TEST_STATUS" != "success" ]; then TEST_TXT="Failed"; fi
+
+          # Determine Branch flow (source -> target if PR)
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BRANCH_FLOW="${{ github.head_ref }} ➔ ${{ github.base_ref }}"
+          else
+            BRANCH_FLOW="${{ github.ref_name }}"
+          fi
 
           COMMIT_MSG=$(git log -1 --pretty=format:"%s")
           ACTION_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
@@ -117,17 +126,17 @@ jobs:
             "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
             "embeds": [
               {
-                "title": "CI Pipeline: $OVERALL_STATUS",
+                "title": "$TITLE_EMOJI CI Pipeline: $OVERALL_STATUS",
                 "url": "$ACTION_URL",
                 "color": $COLOR,
                 "description": "**Commit:** \`$COMMIT_MSG\`\n**Author:** \`${{ github.actor }}\` | **Event:** \`${{ github.event_name }}\`",
                 "fields": [
-                  { "name": "Branch", "value": "\`${{ github.ref_name }}\`", "inline": true },
-                  { "name": "Lint & Build", "value": "$LINT_TXT", "inline": true },
-                  { "name": "Tests", "value": "$TEST_TXT", "inline": true },
-                  { "name": "Logs", "value": "[View Run Details]($ACTION_URL)", "inline": false }
+                  { "name": "Branch Flow", "value": "\`$BRANCH_FLOW\`", "inline": false },
+                  { "name": "Lint & Typecheck", "value": "$LINT_TXT", "inline": true },
+                  { "name": "Unit & Auto Tests", "value": "$TEST_TXT", "inline": true },
+                  { "name": "Action Logs", "value": "[View Run Details]($ACTION_URL)", "inline": false }
                 ],
-                "footer": { "text": "Plot Farm Monorepo" },
+                "footer": { "text": "Plot Farm Monorepo CI/CD" },
                 "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
               }
             ]
