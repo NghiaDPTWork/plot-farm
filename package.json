@@ -5,6 +5,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "test": "turbo run test",
     "clean": "turbo run clean",
     "prepare": "husky"
   },
@@ -17,7 +18,8 @@
     "lint-staged": "^15.2.5",
     "prettier": "^3.2.5",
     "turbo": "^2.0.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
   },
   "packageManager": "pnpm@9.0.0"
 }
