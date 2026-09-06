@@ -116,10 +116,16 @@ jobs:
             PR_TITLE="${{ github.event.pull_request.title }}"
             ITEM_TITLE="**PR #$PR_NUM:** $PR_TITLE"
             BRANCH_FLOW="${{ github.head_ref }} ➔ ${{ github.base_ref }}"
+            EVENT_LABEL="pull_request"
           else
             COMMIT_MSG=$(git log -1 --pretty=format:"%s")
             ITEM_TITLE="**Commit:** \`$COMMIT_MSG\`"
             BRANCH_FLOW="${{ github.ref_name }}"
+            EVENT_LABEL="${{ github.event_name }}"
+
+            if [[ "$COMMIT_MSG" == Merge\ pull\ request* ]]; then
+              EVENT_LABEL="PR Merged 🎉"
+            fi
           fi
 
           ACTION_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
@@ -133,7 +139,7 @@ jobs:
                 "title": "$TITLE_EMOJI CI Pipeline: $OVERALL_STATUS",
                 "url": "$ACTION_URL",
                 "color": $COLOR,
-                "description": "$ITEM_TITLE\n\n**Author:** \`${{ github.actor }}\`  |  **Event:** \`${{ github.event_name }}\`",
+                "description": "$ITEM_TITLE\n\n**Author:** \`${{ github.actor }}\`  |  **Event:** \`$EVENT_LABEL\`",
                 "fields": [
                   { "name": "Branch Flow", "value": "\`$BRANCH_FLOW\`", "inline": false },
                   { "name": "Lint & Typecheck", "value": "$LINT_TXT", "inline": true },
