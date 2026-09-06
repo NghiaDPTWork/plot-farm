@@ -95,45 +95,39 @@ jobs:
           TEST_STATUS="${{ needs.unit-and-automation-tests.result }}"
           
           COLOR=65280
-          TITLE_EMOJI="✅"
           OVERALL_STATUS="SUCCESS"
 
           if [ "$LINT_STATUS" != "success" ] || [ "$TEST_STATUS" != "success" ]; then
             COLOR=16711680
-            TITLE_EMOJI="❌"
             OVERALL_STATUS="FAILED"
           fi
 
-          LINT_ICON="✅ PASSED"
-          if [ "$LINT_STATUS" != "success" ]; then LINT_ICON="❌ FAILED"; fi
+          LINT_TXT="Passed"
+          if [ "$LINT_STATUS" != "success" ]; then LINT_TXT="Failed"; fi
 
-          TEST_ICON="✅ PASSED"
-          if [ "$TEST_STATUS" != "success" ]; then TEST_ICON="❌ FAILED"; fi
+          TEST_TXT="Passed"
+          if [ "$TEST_STATUS" != "success" ]; then TEST_TXT="Failed"; fi
 
           COMMIT_MSG=$(git log -1 --pretty=format:"%s")
           ACTION_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          REPO_URL="https://github.com/${{ github.repository }}"
 
           MESSAGE_JSON=$(cat <<EOF
           {
-            "username": "Plot Farm CI Bot",
+            "username": "Plot Farm CI",
             "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
             "embeds": [
               {
-                "title": "$TITLE_EMOJI Plot Farm CI Pipeline: $OVERALL_STATUS",
+                "title": "CI Pipeline: $OVERALL_STATUS",
                 "url": "$ACTION_URL",
                 "color": $COLOR,
-                "description": "**Commit Message:**\n\`$COMMIT_MSG\`",
+                "description": "**Commit:** \`$COMMIT_MSG\`\n**Author:** \`${{ github.actor }}\` | **Event:** \`${{ github.event_name }}\`",
                 "fields": [
-                  { "name": "📌 Repository", "value": "[\`${{ github.repository }}\`]($REPO_URL)", "inline": true },
-                  { "name": "🌿 Branch / Ref", "value": "\`${{ github.ref_name }}\`", "inline": true },
-                  { "name": "👤 Triggered By", "value": "\`${{ github.actor }}\`", "inline": true },
-                  { "name": "🔍 Lint & Build", "value": "$LINT_ICON", "inline": true },
-                  { "name": "🧪 Unit & Auto Tests", "value": "$TEST_ICON", "inline": true },
-                  { "name": "⚡ Event", "value": "\`${{ github.event_name }}\`", "inline": true },
-                  { "name": "🔗 Action Logs", "value": "[View Run Details]($ACTION_URL)", "inline": false }
+                  { "name": "Branch", "value": "\`${{ github.ref_name }}\`", "inline": true },
+                  { "name": "Lint & Build", "value": "$LINT_TXT", "inline": true },
+                  { "name": "Tests", "value": "$TEST_TXT", "inline": true },
+                  { "name": "Logs", "value": "[View Run Details]($ACTION_URL)", "inline": false }
                 ],
-                "footer": { "text": "Plot Farm Monorepo CI/CD Automation" },
+                "footer": { "text": "Plot Farm Monorepo" },
                 "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
               }
             ]
