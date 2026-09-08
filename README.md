@@ -34,6 +34,7 @@ plot-farm/
 
 | Tài liệu | Mô tả |
 | :--- | :--- |
+| **[Quy chuẩn Kiến trúc (Architecture Standards)](docs/ARCHITECTURE_STANDARDS.md)** | Chi tiết chuẩn **FSD** (Frontend) & **Modular Architecture** (Backend) |
 | **[Quy chuẩn Lập trình (Coding Conventions)](docs/CODING_CONVENTION.md)** | Quy định đặt tên nhánh `us-xx`, commit message, PR workflow & Husky |
 | **[Hướng dẫn Luật ESLint (ESLint Rules Guide)](docs/ESLINT_RULES.md)** | Diễn giải quy tắc linter, TypeScript strict & React Hooks rules |
 | **[Hướng dẫn CI/CD Pipeline (CI/CD Guide)](docs/CI_CD_GUIDE.md)** | Hướng dẫn vận hành GitHub Actions, Discord Webhook & Backlog |

@@ -1,0 +1,31 @@
+.dashboard-cta {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-image-wrapper {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  margin: 0 auto;
+  max-width: 1000px;
+}
+
+.dashboard-img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.overlay-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(255,255,255,1), transparent);
+  pointer-events: none;
+}

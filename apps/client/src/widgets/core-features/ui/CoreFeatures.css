@@ -1,0 +1,52 @@
+.core-features {
+  padding: 5rem 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.core-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .core-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .core-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.core-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #f1f5f9;
+  background: #fafaf9;
+  transition: background 0.3s;
+}
+
+.core-item:hover {
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.core-icon {
+  color: #10b981;
+  margin-top: 2px;
+}
+
+.core-text h4 {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.core-text p {
+  font-size: 0.85rem;
+}
